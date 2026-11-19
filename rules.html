@@ -254,15 +254,15 @@
         © LOLEX Community Hub & Rules. All rights reserved.
     </footer>
 
-    <script>
+<script>
         let currentCategory = '전체';
 
-        function filterCategory(category) {
+        function filterCategory(category, clickedBtn) {
             currentCategory = category;
-            
+
             const buttons = document.querySelectorAll('.cat-btn');
             buttons.forEach(btn => {
-                if (btn.innerText === category || (category === '전체' && btn.innerText.includes('전체'))) {
+                if (btn === clickedBtn) {
                     btn.className = "cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-900 text-white transition shadow-sm";
                 } else {
                     btn.className = "cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
@@ -279,7 +279,7 @@
             for (let i = 0; i < cards.length; i++) {
                 const cardCategory = cards[i].getAttribute('data-category');
                 const text = cards[i].getAttribute('data-text').toLowerCase();
-                
+
                 const matchesCategory = (currentCategory === '전체' || cardCategory === currentCategory);
                 const matchesSearch = text.includes(input);
 
