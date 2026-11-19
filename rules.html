@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LOLEX 법전</title>
+    
+    <!-- 웹앱(PWA) 및 아이콘 설정 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LOLEX 법전">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- 폰트 및 스타일 (Tailwind CSS) -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Gowun Batang', serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        mark {
+            background-color: #fef08a;
+            padding: 0 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 상단 메인으로 돌아가기 내비게이션 바 -->
+    <nav class="bg-slate-900 border-b border-slate-800 px-6 py-3.5 sticky top-0 z-50 flex items-center justify-between shadow-md">
+        <a href="index.html" class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-2 text-sm md:text-base">
+            <span>←</span> 메인 홈으로 가기
+        </a>
+        <span class="text-xs text-slate-400 font-medium">LOLEX Rules</span>
+    </nav>
+
+    <!-- Hero Banner Section -->
+    <header class="relative bg-slate-950 text-white overflow-hidden shadow-xl border-b border-slate-800">
+        <div class="absolute inset-0 z-0 opacity-30">
+            <img src="logo.png" alt="LOLEX Background" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent z-10"></div>
+
+        <div class="relative z-20 max-w-4xl mx-auto px-6 py-10 md:py-14 text-center flex flex-col items-center">
+            <div class="mb-3 p-2.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl inline-block">
+                <img src="logo.png" alt="LOLEX Logo" class="h-14 md:h-18 object-contain rounded-xl">
+            </div>
+            <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight mb-2 text-white drop-shadow-md">📜 LOLEX 법전</h1>
+            <p class="text-slate-300 text-xs md:text-sm max-w-lg leading-relaxed">
+                우리 모임의 내전, 티측내, 리그 및 제재 규정을 한눈에 확인하고 검색해 보세요.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Container (검색 및 규정 리스트) -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-6 flex flex-col gap-6 -mt-4 relative z-30">
+
+        <!-- Search and Filter Section -->
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-200/80 p-4 md:p-6 flex flex-col gap-4">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </span>
+                <input type="text" id="searchInput" placeholder="조항 내용, 키워드 검색 (예: 지각, 펑크, 대타, 마이크, 제재...)" 
+                    class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-sm transition shadow-inner"
+                    onkeyup="filterRules()">
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100" id="categoryFilters">
+                <button onclick="filterCategory('전체')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-900 text-white transition shadow-sm">전체 보기</button>
+                <button onclick="filterCategory('내전')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">내전</button>
+                <button onclick="filterCategory('티측내')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">티측내</button>
+                <button onclick="filterCategory('리그')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">리그</button>
+                <button onclick="filterCategory('가입')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">가입</button>
+                <button onclick="filterCategory('경고 및 제재')" class="cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">경고 및 제재</button>
+            </div>
+        </div>
+
+        <!-- Rule List Section -->
+        <div id="ruleList" class="flex flex-col gap-4">
+            
+            <!-- 제1조: 내전 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="내전" data-text="제1조 내전 소통 게임 매너 마이크 필수 음주 롤 금지 눈치 금지">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg">내전</span>
+                    <span class="text-xs font-semibold text-slate-400">제1조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[내전 소통 및 게임 매너 수칙]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- <b>마이크 사용 필수</b>: 원활한 소통을 위해 노마이크 참여 금지<br>
+- <b>음주 롤 금지</b>: 맨정신으로 즐겁게 게임 참여<br>
+- <b>클린 문화</b>: 고티어가 저티어 눈치 주는 행위 및 감정적 언행 절대 금지<br>
+- <b>상대팀 고지</b>: 내전 진행 중 라인 변경 시 상대 팀에게 즉시 안내
+                </p>
+            </div>
+
+            <!-- 제2조: 내전 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="내전" data-text="제2조 내전 시간 준수 지각 규정 벌금 팀장 지정">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg">내전</span>
+                    <span class="text-xs font-semibold text-slate-400">제2조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[내전 시간 준수 및 지각 규정]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- <b>정시 엄수</b>: 시작 시간 이후 불참 통보는 지각 처리 ("10분 뒤 가요" 등 불가)<br>
+- <b>지각 벌금</b>: 정시 기준 5분 이상 지각 시 인당 2,000원 부과<br>
+- <b>팀장 지정</b>: 밸런스를 위해 임의 지정될 수 있으며 거부 시 지각 처리
+                </p>
+            </div>
+
+            <!-- 제3조: 내전 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="내전" data-text="제3조 내전 취소 펑크 금지 대타 메가커피 아아">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-lg">내전</span>
+                    <span class="text-xs font-semibold text-slate-400">제3조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[내전 취소 및 펑크 금지 규정]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- <b>사전 취소</b>: 개인 사정 취소는 최소 30분 전까지 통보 필수<br>
+- <b>30분 이내 취소</b>: 본인이 직접 대타를 구해야 함<br>
+- <b>펑크 제재</b>: 대타 없이 빠질 경우 참가자 전원에게 메가커피 아아 지급 ☕
+                </p>
+            </div>
+
+            <!-- 제4조: 티측내 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="티측내" data-text="제4조 티측내 드래프트 팀뽑 마이크 매너">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg">티측내</span>
+                    <span class="text-xs font-semibold text-slate-400">제4조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[티측내 진행 규칙]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- <b>팀 드래프트(팀뽑) 매너</b>: 팀장 및 본인 차례 외 마이크 사용 절대 금지 🔇<br>
+- <b>기본 수칙</b>: 내전과 동일하게 마이크 필수, 음주 롤 금지, 클린 문화 적용
+                </p>
+            </div>
+
+            <!-- 제5조: 리그 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="리그" data-text="제5조 19회차 리그 신청 방법 부라인 서폿 점수">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-amber-50 text-amber-700 rounded-lg">리그</span>
+                    <span class="text-xs font-semibold text-slate-400">제5조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[19회차 리그 운영 규칙]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- <b>신청 방법</b>: 소모임 앱 내 '19회차 리그신청🙌' 공지글 댓글 (마감: 12/20까지)<br>
+- <b>신청 자격</b>: 티측내 판수 30판 이상<br>
+- <b>부라인 점수</b>: 부라인 신청은 1회만 가능(변경 불가). 부라인 30판 이상 + 2026년 해당 라인 참여 판수 50판 이상 필수<br>
+- <b>서폿 점수</b>: 서폿 고정 점수 적용 (주라인 서폿이 타 라인 원할 시 부라인 신청)
+                </p>
+            </div>
+
+            <!-- 제6조: 가입 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="가입" data-text="제6조 가입 조건 절차 성인 오픈톡 참여">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-sky-50 text-sky-700 rounded-lg">가입</span>
+                    <span class="text-xs font-semibold text-slate-400">제6조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[가입 조건 및 절차]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- 본 모임은 성인만 가입할 수 있으며, 가입 즉시 오픈톡방 참여와 공지 확인이 필수입니다.<br>
+- 내전 신청 시 본인 명의로 직접 넣어야 하며, 타인 대리 신청 시 대리인에게 책임이 부과됩니다.
+                </p>
+            </div>
+
+            <!-- 제7조: 경고 및 제재 -->
+            <div class="rule-card bg-white border border-slate-200/85 rounded-2xl p-6 shadow-sm transition hover:shadow-md" data-category="경고 및 제재" data-text="제7조 경고 제재 기준 욕설 비매너 트롤 신고">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-3 py-1 bg-rose-50 text-rose-700 rounded-lg">경고 및 제재</span>
+                    <span class="text-xs font-semibold text-slate-400">제7조</span>
+                </div>
+                <h2 class="text-lg md:text-xl font-bold text-slate-900 mb-2">[경고 및 제재 기준]</h2>
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+- 욕설, 비매너 행위, 고의 트롤 발생 시 운영진에게 제보해주시면 확인 후 경고 조치됩니다.<br>
+- 누적 횟수에 따라 경고 또는 영구 제재 조치될 수 있습니다.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-200 mt-auto bg-white">
+        © LOLEX Community Hub & Rules. All rights reserved.
+    </footer>
+
+    <script>
+        let currentCategory = '전체';
+
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText === category || (category === '전체' && btn.innerText.includes('전체'))) {
+                    btn.className = "cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-900 text-white transition shadow-sm";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 text-xs md:text-sm font-medium rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+                }
+            });
+
+            filterRules();
+        }
+
+        function filterRules() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('rule-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                const cardCategory = cards[i].getAttribute('data-category');
+                const text = cards[i].getAttribute('data-text').toLowerCase();
+                
+                const matchesCategory = (currentCategory === '전체' || cardCategory === currentCategory);
+                const matchesSearch = text.includes(input);
+
+                if (matchesCategory && matchesSearch) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
