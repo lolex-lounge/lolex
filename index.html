@@ -24,7 +24,7 @@
         </div>
     </nav>
 
-<!-- 2. 상단 히어로 배너 (네모 박스 제거하고 깔끔한 타이틀 중심 디자인) -->
+<!-- 2. 상단 히어로 배너 -->
     <header class="relative bg-slate-950 overflow-hidden border-b border-slate-800">
         <!-- 배경에 깔릴 이미지 -->
         <div class="absolute inset-0 z-0 opacity-55 ">
@@ -37,13 +37,23 @@
             <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto mb-8 drop-shadow">
                 규칙확인
             </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://script.google.com/macros/s/AKfycbyt2YdxEYKhlzfsabxcd0OWg647KRrZFfYR8UYvzD70fRh7Uvg110AwZFcBsctZK95vXw/exec" target="_blank" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 font-bold text-sm rounded-xl transition shadow-lg flex items-center gap-2">
-                    📊 내전 참여 투표하기
+            <div class="flex flex-wrap justify-center items-center gap-3 md:gap-4">
+                <!-- 1. 내전 참여 투표하기 -->
+                <a href="https://script.google.com/macros/s/AKfycbyt2YdxEYKhlzfsabxcd0OWg647KRrZFfYR8UYvzD70fRh7Uvg110AwZFcBsctZK95vXw/exec" target="_blank" rel="noopener noreferrer" class="px-5 md:px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center justify-center gap-2 whitespace-nowrap">
+                    <span>📊</span>
+                    <span>내전 참여 투표하기</span>
                 </a>
-                <a href="#" onclick="alert('업데이트 예정입니다.'); return false;" class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm md:text-base">
+
+                <!-- 2. 점수 패치노트 -->
+                <a href="#" onclick="alert('업데이트 예정입니다.'); return false;" class="px-5 md:px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center justify-center gap-2 whitespace-nowrap">
                     <span>🎮</span>
                     <span>점수 패치노트</span>
+                </a>
+
+                <!-- 3. 점수 건의 (채팅 링크 연결) -->
+                <a href="https://open.kakao.com/o/sf6AtpWi" target="_blank" rel="noopener noreferrer" class="px-5 md:px-6 py-3.5 bg-slate-800/85 hover:bg-slate-700/90 text-white font-bold text-sm rounded-xl border border-slate-600/80 backdrop-blur-md transition shadow-lg flex items-center justify-center gap-2 whitespace-nowrap">
+                    <span>💬</span>
+                    <span>점수 건의</span>
                 </a>
             </div>
         </div>
